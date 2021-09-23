@@ -1,0 +1,58 @@
+CREATE TABLE IF NOT EXISTS tb_admin(
+	id_admin serial PRIMARY KEY,
+	nome_admin varchar(100) NOT NULL,
+	senha_admin varchar(100) NOT NULL
+);
+
+
+create type tp_plano_cliente AS ENUM(
+	'mensal', 'bimestral', 'trimestral', 'semestral', 'anual'
+);
+
+CREATE TABLE IF NOT EXISTS tb_cliente(
+	id_cliente serial PRIMARY KEY,
+	nome_cliente varchar(100) NOT NULL,
+	data_nascimento_cliente date NOT NULL,
+	cpf_cliente varchar(20) NOT NULL,
+	telefone_cliente varchar(20) NOT NULL,
+	email_cliente varchar(45) NOT NULL,
+	endereco_cliente varchar (100) NOT NULL,
+	plano_cliente tp_plano_cliente NOT NULL,
+	id_func integer NOT NULL,
+	FOREIGN KEY (id_func) references tb_funcionario (id_funcionario)
+);
+
+CREATE TABLE IF NOT EXISTS tb_funcionario(
+	id_funcionario serial PRIMARY KEY,
+	nome_funcionario varchar(100) NOT NULL,
+	cpf_funcionario varchar(20) NOT NULL,
+	dataDeNascimento_funcionario varchar(20) NOT NULL,
+	telefone_funcionario varchar(20) NOT NULL,
+	email_funcionario varchar(20) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS tb_equipamento(
+	id_equipamento serial PRIMARY KEY,
+	nome_equipamento varchar(20) NOT NULL,
+	descricao_equipamento varchar(100),
+	id_fornec integer NOT NULL,
+	FOREIGN KEY (id_fornec) references tb_fornecedor (id_fornecedor)	
+	exercicio_equipamento varchar(100)
+);
+
+CREATE TABLE IF NOT EXISTS tb_fornecedor(
+	id_fornecedor serial PRIMARY KEY,
+	nome_fornecedor varchar(100) NOT NULL,
+	email_fornecedor varchar(100) NOT NULL,
+	endereco_fornecedor varchar(100) NOT NULL,
+	descricao_fornecedor varchar(100) NOT NULL
+);
+
+
+CREATE CAST (varchar AS double precision) WITH INOUT AS IMPLICIT;
+CREATE CAST (varchar AS bool) WITH INOUT AS IMPLICIT;
+CREATE CAST (varchar AS timestamp) WITH INOUT AS IMPLICIT;
+CREATE CAST (varchar AS date) WITH INOUT AS IMPLICIT;
+CREATE CAST (varchar AS integer) WITH INOUT AS IMPLICIT;
+CREATE CAST (varchar AS tp_plano_cliente ) WITH INOUT AS IMPLICIT;
+
